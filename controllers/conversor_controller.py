@@ -147,7 +147,7 @@ def get_payments(payments):
     for payment in payments["detPag"]:
         if payment.get("card"):
             payment_string = [
-                f'{get_payment_type(payment["tPag"])} {get_card(payment["card"]["tBand"])}',
+                f'{get_payment_type(payment["tPag"])} {get_card(payment["card"].get("tBand"))}',
                 payment["vPag"]
             ]
         else:
