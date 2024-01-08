@@ -57,6 +57,7 @@ def get_total(document):
     # document.impost()["vProd"]
     # document.impost()["vDesc"]
     # document.impost()["vFrete"]
+    # document.impost()["vTotTrib"]
     # document.impost()["vNF"]
     total = f'{document.total_itens} Itens                  Total Da Nota R$ {document.impost()["vNF"]}\n'
     return total
@@ -183,8 +184,8 @@ def make_dict(source=None, content=None):
                           f"{invoice_key}\n",
         "url_sefaz": document.codes()["urlChave"] if document_type == "NFC-e" else None,
         "fiscal": get_fiscal(document),
-        "complements": "Fonte: Impostos lbpt (fonte lbpt) Tributos Totais\n"
-                       "Incidentes (Lei Federal 12.741/2012) R$ 200.00\n",
+        "complements": f"Fonte: Impostos lbpt (fonte lbpt) Tributos Totais\n"
+                       f"Incidentes (Lei Federal 12.741/2012) R$ {document.impost()['vTotTrib']}\n",
         "message": document.additional_info()["infCpl"]
     }
     return dict_details
