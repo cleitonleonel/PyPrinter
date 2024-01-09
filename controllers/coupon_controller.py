@@ -1,5 +1,6 @@
 #!/usr/bin/python
 #  -*- coding: utf-8 -*-
+from controllers.text_controller import line_break
 from controllers.image_controller import ImageController
 from escpos.printer import Usb, File, Dummy, CupsPrinter
 
@@ -107,17 +108,20 @@ class DanfcePrinter(object):
         self.printer.text(lines)
 
     def print_produtcs(self, products):
-        result_str = ""
         for product in products:
+            result_str = ""
             code, description, quantity, price, total = product
             self.printer.set(bold=False, font="b")
             self.printer.line_spacing(spacing=1)
             if len(description) > 30:
-                broken_description = [description[i:i + 31] for i in range(0, len(description), 31)]
+                broken_description = line_break(description, 31).split("\n")
                 first_line = f"{code:<6} {broken_description[0]:<31} {quantity:>9} {price:>7} {total:>7}"
                 result_str += first_line
-                for linha in broken_description[1:]:
-                    result_str += f"{'':>6} {linha:<31}"
+                for index, line in enumerate(broken_description[1:]):
+                    if index > 0:
+                        result_str += '\n'
+                    max_length = 56 if len(line) > 20 else 31
+                    result_str += f"{'':>6} {line:<{max_length}}"
             else:
                 result_str = f"{code:<6} {description:<31} {quantity:>9} {price:>7} {total:>7}"
             self.printer.text(result_str + "\n")

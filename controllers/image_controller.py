@@ -4,25 +4,10 @@ import io
 import re
 import qrcode
 import base64
+from controllers.text_controller import line_break
 from PIL import (Image,
                  ImageDraw,
                  ImageFont)
-
-
-def line_break(text, limit):
-    lines = text.splitlines()
-    lines_broken = []
-    for line in lines:
-        words = line.split()
-        line_broken = ''
-        for word in words:
-            if len(line_broken + word) <= limit:
-                line_broken += word + ' '
-            else:
-                lines_broken.append(line_broken.strip())
-                line_broken = word + ' '
-        lines_broken.append(line_broken.strip())
-    return "\n".join(lines_broken)
 
 
 class ImageController:
