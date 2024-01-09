@@ -56,11 +56,15 @@ def get_itens(document):
 def get_total(document):
     # document.impost()["vProd"]
     # document.impost()["vDesc"]
-    # document.impost()["vFrete"]
     # document.impost()["vTotTrib"]
     # document.impost()["vNF"]
-    total = f'{document.total_itens} Itens                  Total Da Nota R$ {document.impost()["vNF"]}\n'
-    return total
+    max_line_width = 48
+    items_str = f'{document.total_itens} Itens'
+    value_str = f'Total Da Nota R$ {document.impost()["vNF"]}'
+    available_items_width = max_line_width - len(value_str)
+    items_str = items_str[:available_items_width]
+    total_str = f'{items_str:<{available_items_width}}{value_str:>}'
+    return total_str
 
 
 def get_fiscal(document):
