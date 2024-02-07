@@ -2,7 +2,7 @@
 #  -*- coding: utf-8 -*-
 from controllers.text_controller import line_break
 from controllers.image_controller import ImageController
-from escpos.printer import Usb, File, Dummy, CupsPrinter
+from escpos.printer import Usb, Dummy
 
 img_controller = ImageController()
 
