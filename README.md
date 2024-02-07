@@ -3,7 +3,15 @@
 Servidor Flask para conversão de xml do Documento Auxiliar da Nota Fiscal Eletrônica - Consumidor Eletrônico ou só DANFCE, 
 para arquivos binários de impressão direta em modo texto em impressoras térmicas de 80mm.
 
-<img src="https://raw.githubusercontent.com/cleitonleonel/PyPrinter/master/src/media/python-coupon.png" alt="PyPrinter" width="250"/>
+<p>
+<a href="https://github.com//cleitonleonel/PyPrinter" target="_blank">
+    <img src="https://raw.githubusercontent.com/cleitonleonel/PyPrinter/master/src/media/python-coupon.png" alt="PyPrinter" width="300"/>
+</a>
+<br>
+<a target="_blank">
+    <img src="https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-green" alt="python" width="300">
+</a>
+</p>
 
 ## Clonando o projeto:
 
