@@ -4,6 +4,7 @@ import io
 import base64
 from PIL import Image
 from datetime import datetime
+from controllers.text_controller import format_cnpj
 from controllers.document_controller import DocumentController
 
 
@@ -17,11 +18,14 @@ def base64_img(file_path):
 
 def get_header(data):
     string_header = (
-        f'{data.emit()["CNPJ"]}\n'
+        f'CNPJ: {format_cnpj(data.emit()["CNPJ"])}\n'
         f'{data.emit()["xNome"]}\n'
         f'{data.emit()["enderEmit"]["xLgr"]}, {data.emit()["enderEmit"].get("nro", "")}\n'
-        f'{data.emit()["enderEmit"]["xBairro"]} - {data.emit()["enderEmit"]["CEP"]},'
-        f'{data.emit()["enderEmit"].get("xCpl", "")}\n'
+        # f'{data.emit()["enderEmit"]["xBairro"]} - {data.emit()["enderEmit"]["CEP"]},'
+        f'{data.emit()["enderEmit"]["xBairro"]}, '
+        # f'{data.emit()["enderEmit"].get("xCpl", "")}\n'
+        # f'{data.emit()["enderEmit"]["xMun"]} - {data.emit()["enderEmit"]["UF"]}\n'
+        f'{data.emit()["enderEmit"].get("xCpl", "")}, '
         f'{data.emit()["enderEmit"]["xMun"]} - {data.emit()["enderEmit"]["UF"]}\n'
         f'Fone / Fax: {data.emit()["enderEmit"].get("fone", "")}'
     )
@@ -170,14 +174,15 @@ def get_payments(payments):
     return new_payments
 
 
-def make_dict(source=None, content=None):
+def make_dict(source=None, content=None, logo=None):
     document = DocumentController(source, content)
+    logo_path = document.logo(logo_path=logo) or document.logo()
     invoice_key = document.info_nfe()["chNFe"]
     document_type = get_nf_model(invoice_key[20:22])
     payments = document.payments()
     dict_details = {
         "header": {
-            "logo": document.logo(),
+            "logo": logo_path,
             "issuer": get_header(document),
         },
         "products": get_itens(document),

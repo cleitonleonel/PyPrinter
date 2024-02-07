@@ -21,6 +21,28 @@ def validate_xml(xml_content):
         return False
 
 
+def prepare_content():
+    request_file = request.files.get('file')
+    if request_file and request_file.filename.endswith(".xml"):
+        content = request_file.stream.read().decode()
+        data = {
+            "xml_content": content
+        }
+    else:
+        data = request.get_json()
+    if data.get("xml_content"):
+        if not validate_xml(data.get("xml_content")):
+            return {
+                "error": True,
+                "message": "Invalid XML format"
+            }
+        return make_dict(
+            content=data.get("xml_content"),
+            logo=data.get("logo"),
+        )
+    return data
+
+
 @printer_app.route("/", methods=['GET'])
 def index():
     return jsonify(message="ok", version=version)
@@ -29,23 +51,20 @@ def index():
 @printer_app.route("/geradanfce", methods=['POST'])
 def danfce_generator():
     try:
-        request_file = request.files.get('file')
-        if request_file and ".xml" in request_file.filename:
-            content = request_file.stream.read().decode()
-            data = {"xml_content": content}
-        else:
-            data = request.get_json()
-        if data.get("xml_content"):
-            if not validate_xml(data.get("xml_content")):
-                return jsonify({"error": True, "message": "Invalid XML format"})
-            data = make_dict(content=data.get("xml_content"))
         printer = DanfcePrinter()
         printer.initialize(dummy=True)
     except Exception as e:
-        return jsonify({"error": True, "message": e})
-    document, message = printer.print_document(data)
+        return jsonify(
+            {"error": True, "message": e}
+        ), 500
+    content = prepare_content()
+    if content.get("error"):
+        return jsonify(content), 500
+    document, message = printer.print_document(content)
     if not document:
-        return jsonify({"error": True, "message": message})
+        return jsonify(
+            {"error": True, "message": message}
+        ), 500
     return send_file(
         io.BytesIO(document),
         mimetype='application/octet-stream',
