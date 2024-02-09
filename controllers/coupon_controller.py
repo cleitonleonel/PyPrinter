@@ -1,6 +1,7 @@
 #!/usr/bin/python
 #  -*- coding: utf-8 -*-
-from controllers.text_controller import line_break
+from controllers.text_controller import (line_break,
+                                         format_cpf_cnpj)
 from controllers.image_controller import ImageController
 from escpos.printer import Usb, Dummy
 
@@ -77,15 +78,39 @@ class DanfcePrinter(object):
         self.printer.line_spacing(spacing=1)
         self.printer.text(data["text_url_sefaz"])
 
-    def print_type_document(self, ambient="homologacao"):
+    def print_type_document(self, consumer, ambient):
         self.print_line_separator()
         self.printer.set(bold=True, align='center', font="a")
         self.printer.line_spacing(spacing=1)
-        self.printer.text(f'CONSUMIDOR\nNF-E EMITIDA EM AMBIENTE DE {ambient.upper()}\n')
+        ambient_info, address_text = ("", "")
+        document = (consumer.get("CPF") or
+                    consumer.get("CNPJ", ""))
+        name = consumer.get("xNome")
+        address_consumer = consumer.get("enderDest", {})
+        street = address_consumer.get("xLgr")
+        number = address_consumer.get("nro")
+        neighborhood = address_consumer.get("xBairro")
+        city = address_consumer.get("xMun")
+        self.printer.text(f'CONSUMIDOR {format_cpf_cnpj(document)}\n')
+        self.printer.set(bold=False, align='center', font="b")
+        new_line = False
+        if all([name, street, number, neighborhood, city]):
+            self.printer.text(f"{line_break(name.replace(' - ', ' '), limit=40)}\n")
+            address_text = (f"{street}, {number} "
+                            f"{neighborhood} - {city}")
+            new_line = True
+        if ambient != "producao":
+            ambient_complement = "AMBIENTE DE" if ambient.upper() == "HOMOLOGACAO" else ""
+            ambient_info = f'NFC-E EMITIDA EM {ambient_complement} {ambient.upper()}\n'
+        ambient_text = "\n\n" + ambient_info if new_line else ambient_info
+        self.printer.text(address_text)
+        self.printer.set(bold=True, align='center', font="a")
+        self.printer.line_spacing(spacing=1)
+        self.printer.text(ambient_text)
 
-    def print_qrcode(self, fiscal, url_sefaz):
+    def print_qrcode(self, fiscal, qr_url):
         qr_img_container = img_controller.qrcode_adjust(fiscal,
-                                                        qr_data=url_sefaz)
+                                                        qr_data=qr_url)
         self.print_line_separator()
         self.printer.set(align='center')
         self.printer.image(qr_img_container.convert('L'),
@@ -139,6 +164,9 @@ class DanfcePrinter(object):
         total_itens = data["totais"]
         fiscal = data["fiscal"]
         url_sefaz = data["url_sefaz"]
+        qrcode = data["qrcode"]
+        consumer = data["consumer"]
+        ambient = "homologacao"
         try:
             self.print_header_logo(img_source, text_header)
             self.print_title_document()
@@ -147,8 +175,8 @@ class DanfcePrinter(object):
             self.print_itens(total_itens)
             self.print_payments(data)
             self.print_url_document(data)
-            self.print_type_document()
-            self.print_qrcode(fiscal, url_sefaz)
+            self.print_type_document(consumer, ambient)
+            self.print_qrcode(fiscal, qrcode)
             self.print_complements(data)
             self.print_message(data)
             self.printer.cut()

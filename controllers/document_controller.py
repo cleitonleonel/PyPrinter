@@ -16,6 +16,12 @@ class DocumentController(object):
         self.total_itens = None
         self.get_data()
 
+    def _get_inf_nfe(self):
+        """
+        Método privado para obter a parte específica dos dados relacionada a infNFe.
+        """
+        return self.data["nfeProc"]["NFe"]["infNFe"]
+
     def get_data(self):
         if not self.content:
             with open(self.filepath, 'rb') as xml:
@@ -28,31 +34,34 @@ class DocumentController(object):
         return self.logo_path
 
     def emit(self):
-        return self.data["nfeProc"]["NFe"]["infNFe"]["emit"]
+        return self._get_inf_nfe()["emit"]
+
+    def dest(self):
+        return self._get_inf_nfe().get("dest", {})
 
     def itens(self):
-        return self.data["nfeProc"]["NFe"]["infNFe"]["det"]
+        return self._get_inf_nfe()["det"]
 
     def info_nfe(self):
         return self.data["nfeProc"]["protNFe"]["infProt"]
 
     def info_itens(self):
-        return self.data["nfeProc"]["NFe"]["infNFe"]["det"]["prod"]
+        return self._get_inf_nfe()["det"]["prod"]
 
     def fiscal(self):
-        return self.data["nfeProc"]["NFe"]["infNFe"]["ide"]
+        return self._get_inf_nfe()["ide"]
 
     def impost(self):
-        return self.data["nfeProc"]["NFe"]["infNFe"]["total"]["ICMSTot"]
+        return self._get_inf_nfe()["total"]["ICMSTot"]
 
     def protocol(self):
-        return self.data["nfeProc"]["protNFe"]["infProt"]["nProt"]
+        return self.info_nfe()["nProt"]
 
     def codes(self):
         return self.data["nfeProc"]["NFe"]["infNFeSupl"]
 
     def payments(self):
-        return self.data["nfeProc"]["NFe"]["infNFe"]["pag"]
+        return self._get_inf_nfe()["pag"]
 
     def additional_info(self):
-        return self.data["nfeProc"]["NFe"]["infNFe"]["infAdic"]
+        return self._get_inf_nfe()["infAdic"]

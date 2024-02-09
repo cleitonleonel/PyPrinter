@@ -4,7 +4,7 @@ import io
 import base64
 from PIL import Image
 from datetime import datetime
-from controllers.text_controller import format_cnpj
+from controllers.text_controller import format_cpf_cnpj
 from controllers.document_controller import DocumentController
 
 
@@ -17,15 +17,15 @@ def base64_img(file_path):
 
 
 def get_header(data):
+    complement_address = data.emit()["enderEmit"].get("xCpl")
     string_header = (
-        f'CNPJ: {format_cnpj(data.emit()["CNPJ"])}\n'
+        f'CNPJ: {format_cpf_cnpj(data.emit()["CNPJ"])}\n'
         f'{data.emit()["xNome"]}\n'
         f'{data.emit()["enderEmit"]["xLgr"]}, {data.emit()["enderEmit"].get("nro", "")}\n'
         # f'{data.emit()["enderEmit"]["xBairro"]} - {data.emit()["enderEmit"]["CEP"]},'
-        f'{data.emit()["enderEmit"]["xBairro"]}, '
+        f'{data.emit()["enderEmit"]["xBairro"]} {"," + complement_address if complement_address else ""}\n'
         # f'{data.emit()["enderEmit"].get("xCpl", "")}\n'
         # f'{data.emit()["enderEmit"]["xMun"]} - {data.emit()["enderEmit"]["UF"]}\n'
-        f'{data.emit()["enderEmit"].get("xCpl", "")}, '
         f'{data.emit()["enderEmit"]["xMun"]} - {data.emit()["enderEmit"]["UF"]}\n'
         f'Fone / Fax: {data.emit()["enderEmit"].get("fone", "")}'
     )
@@ -188,10 +188,12 @@ def make_dict(source=None, content=None, logo=None):
         "products": get_itens(document),
         "totais": get_total(document),
         "payments": get_payments(payments),
+        "consumer": document.dest(),
         "text_url_sefaz": "Consulta pela chave de acesso em\n"
                           "www.sefaz.es.gov.br/nfce/consulta\n"
                           f"{invoice_key}\n",
         "url_sefaz": document.codes()["urlChave"] if document_type == "NFC-e" else None,
+        "qrcode": document.codes()["qrCode"],
         "fiscal": get_fiscal(document),
         "complements": f"Fonte: Impostos lbpt (fonte lbpt) Tributos Totais\n"
                        f"Incidentes (Lei Federal 12.741/2012) R$ {document.impost()['vTotTrib']}\n",
