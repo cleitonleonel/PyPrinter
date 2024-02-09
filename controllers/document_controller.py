@@ -20,7 +20,11 @@ class DocumentController(object):
         """
         Método privado para obter a parte específica dos dados relacionada a infNFe.
         """
-        return self.data["nfeProc"]["NFe"]["infNFe"]
+        if self.data.get("nfeProc"):
+            inf_nfe = self.data["nfeProc"]["NFe"]["infNFe"]
+        else:
+            inf_nfe = self.data["NFe"]["infNFe"]
+        return inf_nfe
 
     def get_data(self):
         if not self.content:
@@ -43,12 +47,17 @@ class DocumentController(object):
         return self._get_inf_nfe()["det"]
 
     def info_nfe(self):
-        return self.data["nfeProc"]["protNFe"]["infProt"]
+        if self.data.get("nfeProc"):
+            info_nfe = self.data["nfeProc"]["protNFe"]["infProt"]
+        else:
+            info_nfe = self.data["NFe"]
+            info_nfe["chNFe"] = info_nfe["infNFe"]["@Id"].replace("NFe", "")
+        return info_nfe
 
     def info_itens(self):
         return self._get_inf_nfe()["det"]["prod"]
 
-    def fiscal(self):
+    def identification_nfe(self):
         return self._get_inf_nfe()["ide"]
 
     def impost(self):
@@ -58,7 +67,11 @@ class DocumentController(object):
         return self.info_nfe()["nProt"]
 
     def codes(self):
-        return self.data["nfeProc"]["NFe"]["infNFeSupl"]
+        if self.data.get("nfeProc"):
+            codes = self.data["nfeProc"]["NFe"]["infNFeSupl"]
+        else:
+            codes = self.data["NFe"]["infNFeSupl"]
+        return codes
 
     def payments(self):
         return self._get_inf_nfe()["pag"]

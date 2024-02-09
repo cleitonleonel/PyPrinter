@@ -13,7 +13,7 @@ def format_cpf_cnpj(document):
             r'^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$',
             r'\1.\2.\3/\4-\5', string_document
         )
-    return ""
+    return "\nNao Identificado"
 
 
 def line_break(text, limit, sep=" "):

@@ -2,6 +2,8 @@
 #  -*- coding: utf-8 -*-
 import io
 import base64
+import json
+
 from PIL import Image
 from datetime import datetime
 from controllers.text_controller import format_cpf_cnpj
@@ -71,15 +73,19 @@ def get_total(document):
     return total_str
 
 
-def get_fiscal(document):
-    data_obj = datetime.fromisoformat(document.fiscal()["dhEmi"])
+def get_fiscal(document, emission_type):
+    dh_final = (datetime.fromisoformat(document.identification_nfe()["dhEmi"])
+                if emission_type.upper() == "CONTINGENCIA"
+                else datetime.fromisoformat(document.info_nfe().get("dhRecbto")))
+    protocol = document.info_nfe().get("nProt")
+    authorization_text = f'Protocolo de autorizacao:\n{protocol}\n' if protocol else ''
     string_fiscal = (
-        f'NFC-e Serie {document.fiscal()["serie"]}\n'
-        f'N° {document.fiscal()["cNF"]}\n'
-        f'Protocolo de autorizacao:\n'
-        f'{document.info_nfe()["nProt"]}\n'
-        f'{data_obj.strftime("%d/%m/%Y %H:%M:%S")} hs\n\n'
-        f'{document.fiscal()["verProc"]}'
+        f'NFC-e Serie {document.identification_nfe()["serie"]}\n'
+        f'N° {document.identification_nfe()["nNF"]}\n'
+        f'{authorization_text}'
+        f'{dh_final.strftime("%d/%m/%Y %H:%M:%S")} hs\n'
+        f'{"Via do Consumidor" if emission_type.upper() == "CONTINGENCIA" else ""}\n'
+        f'{document.identification_nfe()["verProc"]}'
     )
     return string_fiscal
 
@@ -177,14 +183,19 @@ def get_payments(payments):
 def make_dict(source=None, content=None, logo=None):
     document = DocumentController(source, content)
     logo_path = document.logo(logo_path=logo) or document.logo()
+    emission = document.identification_nfe()["tpEmis"]
+    ambient_type = document.identification_nfe()["tpAmb"]
     invoice_key = document.info_nfe()["chNFe"]
     document_type = get_nf_model(invoice_key[20:22])
+    emission_type = "normal" if emission == "1" else "contingencia"
     payments = document.payments()
     dict_details = {
         "header": {
             "logo": logo_path,
             "issuer": get_header(document),
         },
+        "ambient": "producao" if ambient_type == "1" else "homologacao",
+        "emission_type": emission_type,
         "products": get_itens(document),
         "totais": get_total(document),
         "payments": get_payments(payments),
@@ -194,7 +205,7 @@ def make_dict(source=None, content=None, logo=None):
                           f"{invoice_key}\n",
         "url_sefaz": document.codes()["urlChave"] if document_type == "NFC-e" else None,
         "qrcode": document.codes()["qrCode"],
-        "fiscal": get_fiscal(document),
+        "fiscal": get_fiscal(document, emission_type),
         "complements": f"Fonte: Impostos lbpt (fonte lbpt) Tributos Totais\n"
                        f"Incidentes (Lei Federal 12.741/2012) R$ {document.impost()['vTotTrib']}\n",
         "message": document.additional_info()["infCpl"]

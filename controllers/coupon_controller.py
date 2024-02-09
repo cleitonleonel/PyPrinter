@@ -78,7 +78,7 @@ class DanfcePrinter(object):
         self.printer.line_spacing(spacing=1)
         self.printer.text(data["text_url_sefaz"])
 
-    def print_type_document(self, consumer, ambient):
+    def print_type_document(self, consumer, ambient, emission):
         self.print_line_separator()
         self.printer.set(bold=True, align='center', font="a")
         self.printer.line_spacing(spacing=1)
@@ -93,20 +93,21 @@ class DanfcePrinter(object):
         city = address_consumer.get("xMun")
         self.printer.text(f'CONSUMIDOR {format_cpf_cnpj(document)}\n')
         self.printer.set(bold=False, align='center', font="b")
-        new_line = False
         if all([name, street, number, neighborhood, city]):
             self.printer.text(f"{line_break(name.replace(' - ', ' '), limit=40)}\n")
             address_text = (f"{street}, {number} "
-                            f"{neighborhood} - {city}")
-            new_line = True
-        if ambient != "producao":
+                            f"{neighborhood} - {city}\n")
+        if ambient.upper() != "PRODUCAO":
             ambient_complement = "AMBIENTE DE" if ambient.upper() == "HOMOLOGACAO" else ""
             ambient_info = f'NFC-E EMITIDA EM {ambient_complement} {ambient.upper()}\n'
-        ambient_text = "\n\n" + ambient_info if new_line else ambient_info
+        if emission.upper() == "CONTINGENCIA":
+            self.printer.set(bold=True, align='center', font="a")
+            self.printer.text("\nEMITIDA EM CONTINGENCIA\n")
+            self.printer.text("Pendente de Autorizacao\n")
         self.printer.text(address_text)
         self.printer.set(bold=True, align='center', font="a")
         self.printer.line_spacing(spacing=1)
-        self.printer.text(ambient_text)
+        self.printer.text("\n" + ambient_info)
 
     def print_qrcode(self, fiscal, qr_url):
         qr_img_container = img_controller.qrcode_adjust(fiscal,
@@ -166,7 +167,8 @@ class DanfcePrinter(object):
         url_sefaz = data["url_sefaz"]
         qrcode = data["qrcode"]
         consumer = data["consumer"]
-        ambient = "homologacao"
+        ambient = data["ambient"]
+        emission = data["emission_type"]
         try:
             self.print_header_logo(img_source, text_header)
             self.print_title_document()
@@ -175,7 +177,7 @@ class DanfcePrinter(object):
             self.print_itens(total_itens)
             self.print_payments(data)
             self.print_url_document(data)
-            self.print_type_document(consumer, ambient)
+            self.print_type_document(consumer, ambient, emission)
             self.print_qrcode(fiscal, qrcode)
             self.print_complements(data)
             self.print_message(data)
