@@ -43,7 +43,7 @@ lpr -P nome_de_compartilhamento_da_impressora -o raw danfce.txt
         <img src="https://raw.githubusercontent.com/cleitonleonel/PyPrinter/master/src/media/danfce_2.jpeg" alt="PyPrinter" width="300" height="600"/>
     </p>
     <p>
-        <img src="https://raw.githubusercontent.com/cleitonleonel/PyPrinter/master/src/media/danfce_4.jpeg" alt="PyPrinter" width="300" height="600"/>
+        <img src="https://raw.githubusercontent.com/cleitonleonel/PyPrinter/master/src/media/danfce_3.jpeg" alt="PyPrinter" width="300" height="600"/>
         <img src="https://raw.githubusercontent.com/cleitonleonel/PyPrinter/master/src/media/danfce_4.jpeg" alt="PyPrinter" width="300" height="600"/>
     </p>
 </div>
