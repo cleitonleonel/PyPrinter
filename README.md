@@ -36,9 +36,17 @@ python server.py
 lpr -P nome_de_compartilhamento_da_impressora -o raw danfce.txt
 ```
 
-## Exemplo de impressão gerado:
-<img src="https://raw.githubusercontent.com/cleitonleonel/PyPrinter/master/src/media/danfce.jpeg" alt="PyPrinter" width="300" height="600"/>
-
+## Exemplos de impressão gerado:
+<div>
+    <p>
+        <img src="https://raw.githubusercontent.com/cleitonleonel/PyPrinter/master/src/media/danfce_1.jpeg" alt="PyPrinter" width="300" height="600"/>
+        <img src="https://raw.githubusercontent.com/cleitonleonel/PyPrinter/master/src/media/danfce_2.jpeg" alt="PyPrinter" width="300" height="600"/>
+    </p>
+    <p>
+        <img src="https://raw.githubusercontent.com/cleitonleonel/PyPrinter/master/src/media/danfce_4.jpeg" alt="PyPrinter" width="300" height="600"/>
+        <img src="https://raw.githubusercontent.com/cleitonleonel/PyPrinter/master/src/media/danfce_4.jpeg" alt="PyPrinter" width="300" height="600"/>
+    </p>
+</div>
 # Este projeto ajudou você?
 
 Se esse projeto deixar você ficar à vontade para fazer uma doação =), pode ser R $ 0,50 hahahaha. Para isso, basta ler o qrcode abaixo, ele foi gerado com meu outro projeto chamado [Pypix](https://github.com/cleitonleonel/pypix.git) arquivo de amostra.
