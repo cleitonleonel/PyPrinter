@@ -19,9 +19,15 @@ para arquivos binários de impressão direta em modo texto em impressoras térmi
 git clone https://github.com/cleitonleonel/PyPrinter.git
 ```
 
-## Uso:
+## Instalando versão compatível do python via Pyenv:
 ```shell
 cd PyPrinter
+sudo chmod +x ./install.sh
+sudo ./install.sh
+```
+
+## Uso:
+```shell
 pip install -r requirements.txt
 python server.py
 ```
