@@ -103,6 +103,7 @@ class DanfcePrinter(object):
         if emission.upper() == "CONTINGENCIA":
             self.printer.set(bold=True, align='center', font="a")
             self.printer.text("\nEMITIDA EM CONTINGENCIA\n")
+            self.printer.set(bold=False, align='center', font="a")
             self.printer.text("Pendente de Autorizacao\n")
         self.printer.text(address_text)
         self.printer.set(bold=True, align='center', font="a")

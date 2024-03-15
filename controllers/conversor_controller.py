@@ -75,16 +75,18 @@ def get_total(document):
 
 def get_fiscal(document, emission_type):
     dh_final = (datetime.fromisoformat(document.identification_nfe()["dhEmi"])
-                if emission_type.upper() == "CONTINGENCIA"
+                if emission_type.upper() == 'CONTINGENCIA'
                 else datetime.fromisoformat(document.info_nfe().get("dhRecbto")))
     protocol = document.info_nfe().get("nProt")
     authorization_text = f'Protocolo de autorizacao:\n{protocol}\n' if protocol else ''
+    contingency_message = ('Via do Consumidor\nEMITIDA EM CONTINGENCA\nPendente de Autorizacao\n'
+                           if emission_type.upper() == 'CONTINGENCIA' else '')
     string_fiscal = (
         f'NFC-e Serie {document.identification_nfe()["serie"]}\n'
         f'N° {document.identification_nfe()["nNF"]}\n'
         f'{authorization_text}'
         f'{dh_final.strftime("%d/%m/%Y %H:%M:%S")} hs\n'
-        f'{"Via do Consumidor" if emission_type.upper() == "CONTINGENCIA" else ""}\n'
+        f'{contingency_message}'
         f'{document.identification_nfe()["verProc"]}'
     )
     return string_fiscal
