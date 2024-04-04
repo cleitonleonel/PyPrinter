@@ -1,6 +1,5 @@
 #!/bin/bash
 
-username=$1
 host='0.0.0.0'
 port=9001
 
@@ -24,19 +23,20 @@ source "$HOME/.bashrc"
 
 pyenv install 3.8
 
-base_directory="/var/www/$username"
+base_directory="/var/www/$USER"
 sudo mkdir -p "$base_directory/pyprinter"
+sudo cp -r ./* "$base_directory/pyprinter"
 
-echo "Dando permissões ao usuário $username"
-sudo chown "$username:$username" -R "$base_directory"
+echo "Dando permissões ao usuário $USER"
+sudo chown "$USER:$USER" -R "$base_directory"
 sudo chmod -R 755 "$base_directory/pyprinter"
-cd "$base_directory" || exit
+cd "$base_directory/pyprinter" || exit
 pyenv local 3.8
-
-python_path=$(pyenv prefix)
 
 pip install -U pip
 pip install -r requirement.txt
+
+python_path=$(pyenv prefix)
 
 if [ -z "$host" ] || [ -z "$port" ]; then
   echo "As configurações de host e/ou porta não foram encontradas no arquivo de configuração."
@@ -44,11 +44,11 @@ if [ -z "$host" ] || [ -z "$port" ]; then
 fi
 
 service_content="[Unit]
-Description=Gunicorn instance to serve $username
+Description=Gunicorn instance to serve $USER
 After=network.target
 
 [Service]
-User=$username
+User=$USER
 Group=www-data
 WorkingDirectory=$base_directory/pyprinter
 Environment=\"PATH=${python_path}/bin\"
