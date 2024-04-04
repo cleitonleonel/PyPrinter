@@ -6,7 +6,7 @@ port=9001
 sudo apt-get update -y
 sudo apt-get install git curl build-essential libssl-dev zlib1g-dev libbz2-dev \
 libreadline-dev libsqlite3-dev wget llvm libncurses5-dev libncursesw5-dev \
-xz-utils tk-dev libffi-dev liblzma-dev python3-openssl -y
+xz-utils tk-dev libffi-dev liblzma-dev python3-openssl jq -y
 
 curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
 
