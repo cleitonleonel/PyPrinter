@@ -1,7 +1,9 @@
 #!/usr/bin/python
 #  -*- coding: utf-8 -*-
-from controllers.text_controller import (line_break,
-                                         format_cpf_cnpj)
+from controllers.text_controller import (
+    line_break,
+    format_cpf_cnpj
+)
 from controllers.image_controller import ImageController
 from escpos.printer import Usb, Dummy
 
@@ -49,8 +51,8 @@ class DanfcePrinter(object):
     def print_title_document(self):
         self.print_line_separator(text="=")
         self.printer.set(bold=True, align='center', font="b")
-        self.printer.line_spacing(spacing=1)
-        self.printer.text("DANFE NFC-e - DOCUMENTO AUXILIO DA NOTA\n")
+        # self.printer.line_spacing(spacing=1)
+        self.printer.text("DANFE NFC-e - DOCUMENTO AUXILIAR DA NOTA\n")
         self.printer.line_spacing(spacing=1)
         self.printer.text("FISCAL DE CONSUMIDOR ELETRONICA\n")
 
@@ -123,7 +125,7 @@ class DanfcePrinter(object):
         self.print_line_separator()
         self.printer.set(bold=False, align='center', font="b")
         self.printer.control("B")
-        self.printer.line_spacing(spacing=1)
+        # self.printer.line_spacing(spacing=1)
         self.printer.text(data["complements"])
 
     def print_message(self, data):

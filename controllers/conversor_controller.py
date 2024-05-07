@@ -2,7 +2,6 @@
 #  -*- coding: utf-8 -*-
 import io
 import base64
-import json
 
 from PIL import Image
 from datetime import datetime
@@ -85,6 +84,7 @@ def get_fiscal(document, emission_type):
         f'NFC-e Serie {document.identification_nfe()["serie"]}\n'
         f'N° {document.identification_nfe()["nNF"]}\n'
         f'{authorization_text}'
+        f'Data da autorizacao\n'
         f'{dh_final.strftime("%d/%m/%Y %H:%M:%S")} hs\n'
         f'{contingency_message}'
         f'{document.identification_nfe()["verProc"]}'

@@ -1,10 +1,12 @@
 #!/usr/bin/python
 #  -*- coding: utf-8 -*-
 import io
-from flask import (Blueprint,
-                   jsonify,
-                   request,
-                   send_file)
+from flask import (
+    Blueprint,
+    jsonify,
+    request,
+    send_file
+)
 from xml.etree import ElementTree
 from controllers.coupon_controller import DanfcePrinter
 from controllers.conversor_controller import make_dict
@@ -60,6 +62,7 @@ def danfce_generator():
     content = prepare_content()
     if content.get("error"):
         return jsonify(content), 500
+    print(content)
     document, message = printer.print_document(content)
     if not document:
         return jsonify(

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+url="http://localhost:8000/geradanfce"
+
 gera_danfce() {
     if [ -z "$1" ]; then
         echo "Erro: Forneça o caminho do arquivo como parâmetro."
@@ -11,13 +13,13 @@ gera_danfce() {
     if [[ "$arquivo" == *".json" ]]; then
         curl -X POST \
             -H "Content-Type: application/json" \
-            -d @"$arquivo" http://localhost:8000/geradanfce -o danfce.txt
+            -d @"$arquivo" "$url" -o danfce.txt
     else
         conteudo=$(cat "$arquivo")
         json_data="{\"xml_content\": $(jq -sR '.' <<< "$conteudo")}"
         curl -X POST \
             -H "Content-Type: application/json" \
-            -d "$json_data" http://localhost:8000/geradanfce -o danfce.txt
+            -d "$json_data" "$url" -o danfce.txt
     fi
 }
 

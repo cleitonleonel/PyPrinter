@@ -5,9 +5,11 @@ import re
 import qrcode
 import base64
 from controllers.text_controller import line_break
-from PIL import (Image,
-                 ImageDraw,
-                 ImageFont)
+from PIL import (
+    Image,
+    ImageDraw,
+    ImageFont
+)
 
 
 class ImageController:
@@ -25,7 +27,7 @@ class ImageController:
         image_width_mm = 80
         # Converta a largura para pixels (considerando uma escala padrão de 1mm por coluna)
         image_width_pixels = int(image_width_mm * 8)  # 1mm = 8 pixels
-        edited_text = line_break(text, 34)
+        edited_text = line_break(text, 35)
         total_lines = len(edited_text.split("\n")) + 2
         total_height = total_lines * 20
         blank_image = Image.new('RGB', (image_width_pixels, total_height), 'white')
@@ -34,11 +36,11 @@ class ImageController:
             decoded_img = base64.b64decode(data_img)
             img_source = io.BytesIO(decoded_img)
         logo = Image.open(img_source).convert('RGBA')
-        logo = logo.resize((150, 150), Image.LANCZOS)
+        logo = logo.resize((125, 150), Image.LANCZOS)
         blank_image.paste(logo, (10, 10), logo)
         draw = ImageDraw.Draw(blank_image)
         font = ImageFont.load_default(size=20)
-        draw.text((200, 10), edited_text, font=font, fill='black')
+        draw.text((140, 10), edited_text, font=font, fill='black')
         # blank_image.save(output_path)
         return blank_image
 
