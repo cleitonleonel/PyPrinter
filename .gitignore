@@ -1,4 +1,7 @@
-tests
+build
+dist
+logs
+utils
 api.py
 danfce.txt
 document.json
@@ -6,6 +9,4 @@ payload.json
 geradanfce.prg
 geradanfce
 make.sh
-build
-dist
-logs
+
