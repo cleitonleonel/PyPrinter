@@ -37,6 +37,8 @@ test_sources = ["tests"]
 author = "Cleiton Leonel Creton"
 author_email = "cleiton.leonel@gmail.com"
 license = { file = "LICENSE" }
+icon = "src/media/icons/icon"
+installer_icon = "src/media/icons/icon"
 
 [tool.briefcase.app.pyprinter.linux.flatpak]
 flatpak_runtime = "org.gnome.Platform"
