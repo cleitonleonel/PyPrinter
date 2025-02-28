@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#  -*- coding: utf-8 -*-
 import io
 from flask import (
     Blueprint,
@@ -8,8 +6,8 @@ from flask import (
     send_file
 )
 from xml.etree import ElementTree
-from controllers.coupon_controller import DanfcePrinter
-from controllers.conversor_controller import make_dict
+from pyprinter.controllers.coupon_controller import DanfcePrinter
+from pyprinter.controllers.conversor_controller import make_dict
 
 printer_app = Blueprint('printer_app', __name__)
 version = "0.0.1"
@@ -25,10 +23,12 @@ def validate_xml(xml_content):
 
 def prepare_content():
     request_file = request.files.get('file')
+    logo = request.form.get('logo')
     if request_file and request_file.filename.endswith(".xml"):
         content = request_file.stream.read().decode()
         data = {
-            "xml_content": content
+            "xml_content": content,
+            "logo": logo
         }
     else:
         data = request.get_json()
@@ -38,10 +38,12 @@ def prepare_content():
                 "error": True,
                 "message": "Invalid XML format"
             }
+
         return make_dict(
             content=data.get("xml_content"),
             logo=data.get("logo"),
         )
+
     return data
 
 
@@ -62,7 +64,7 @@ def danfce_generator():
     content = prepare_content()
     if content.get("error"):
         return jsonify(content), 500
-    print(content)
+
     document, message = printer.print_document(content)
     if not document:
         return jsonify(

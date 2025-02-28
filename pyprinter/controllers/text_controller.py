@@ -13,6 +13,7 @@ def format_cpf_cnpj(document):
             r'^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$',
             r'\1.\2.\3/\4-\5', string_document
         )
+
     return "\nNao Identificado"
 
 
@@ -29,4 +30,23 @@ def line_break(text, limit, sep=" "):
                 lines_broken.append(line_broken.strip())
                 line_broken = word + ' '
         lines_broken.append(line_broken.strip())
+
     return "\n".join(lines_broken)
+
+
+def description_break(text, limit):
+    words = text.split()
+    lines = []
+    current_line = ""
+    for word in words:
+        if len(current_line + " " + word) <= limit:
+            if current_line:
+                current_line += " "
+            current_line += word
+        else:
+            lines.append(current_line)
+            current_line = word
+    if current_line:
+        lines.append(current_line)
+
+    return lines
