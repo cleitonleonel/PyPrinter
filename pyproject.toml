@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "pyprinter"
+version = "0.1.0"
+description = "Servidor Flask para conversão de Danfce em arquivos de impressão direta escpos."
+authors = ["Cleiton Leonel Creton <cleiton.leonel@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+python-escpos = "^3.1"
+flask = "^3.1.0"
+requests = "^2.32.3"
+xmltodict = "^0.14.2"
+gunicorn = "^23.0.0"
+
+[tool.poetry.group.dev.dependencies]
+briefcase = "^0.3.22"
+
+[tool.briefcase]
+project_name = "pyprinter"
+bundle = "com.pyprinter"
+version = "0.1.0"
+python = "3.12"
+
+[tool.briefcase.app.pyprinter]
+requires = [
+    "flask",
+    "python-escpos",
+    "requests",
+    "xmltodict",
+    "gunicorn"
+]
+description = "Servidor Flask para impressão."
+long_description = "Servidor Flask para conversão de Danfce em arquivos de impressão direta escpos."
+sources = ["pyprinter"]
+test_sources = ["tests"]
+author = "Cleiton Leonel Creton"
+author_email = "cleiton.leonel@gmail.com"
+license = { file = "LICENSE" }
+
+[tool.briefcase.app.pyprinter.linux.flatpak]
+flatpak_runtime = "org.gnome.Platform"
+flatpak_runtime_version = "47"
+flatpak_sdk = "org.gnome.Sdk"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
