@@ -1,26 +1,36 @@
-[tool.poetry]
+[project]
 name = "pyprinter"
 version = "0.1.0"
 description = "Servidor Flask para conversão de Danfce em arquivos de impressão direta escpos."
-authors = ["Cleiton Leonel Creton <cleiton.leonel@gmail.com>"]
 readme = "README.md"
+authors = [
+  { name = "Cleiton Leonel Creton", email = "cleiton.leonel@gmail.com" }
+]
+requires-python = ">=3.12,<4.0"
 
-[tool.poetry.dependencies]
-python = "^3.12"
-python-escpos = "^3.1"
-flask = "^3.1.0"
-requests = "^2.32.3"
-xmltodict = "^0.14.2"
-gunicorn = "^23.0.0"
+dependencies = [
+    "python-escpos>=3.1,<4.0",
+    "flask>=3.1.0,<4.0",
+    "requests>=2.32.3,<3.0",
+    "xmltodict>=0.14.2,<1.0",
+    "pywebview>=5.4,<6.0",
+    "pyqt5>=5.15.11,<6.0",
+    "qtpy>=2.4.3,<3.0",
+    "pyqtwebengine>=5.15.7,<6.0",
+    "pygobject==3.50.0,<4.0",
+    "flask-cors>=5.0.1,<6.0"
+]
 
-[tool.poetry.group.dev.dependencies]
-briefcase = "^0.3.22"
+[project.optional-dependencies]
+dev = [
+    "briefcase>=0.3.22,<0.4.0"
+]
 
 [tool.briefcase]
 project_name = "pyprinter"
 bundle = "com.pyprinter"
 version = "0.1.0"
-python = "3.12"
+python = ">=3.12,<4.0"
 
 [tool.briefcase.app.pyprinter]
 requires = [
@@ -28,7 +38,12 @@ requires = [
     "python-escpos",
     "requests",
     "xmltodict",
-    "gunicorn"
+    "flask-cors",
+    "pywebview",
+    "pyqt5",
+    "qtpy",
+    "pyqtwebengine",
+    "pygobject",
 ]
 description = "Servidor Flask para impressão."
 long_description = "Servidor Flask para conversão de Danfce em arquivos de impressão direta escpos."
@@ -37,8 +52,8 @@ test_sources = ["tests"]
 author = "Cleiton Leonel Creton"
 author_email = "cleiton.leonel@gmail.com"
 license = { file = "LICENSE" }
-icon = "src/media/icons/icon"
-installer_icon = "src/media/icons/icon"
+icon = "pyprinter/resources/media/icons/icon"
+installer_icon = "pyprinter/resources/media/icons/icon"
 
 [tool.briefcase.app.pyprinter.linux.flatpak]
 flatpak_runtime = "org.gnome.Platform"
@@ -46,5 +61,5 @@ flatpak_runtime_version = "47"
 flatpak_sdk = "org.gnome.Sdk"
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
+requires = ["poetry-core>=2.2.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"

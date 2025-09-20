@@ -2,6 +2,7 @@ import io
 import re
 import qrcode
 import base64
+from pyprinter.config import get_project_root
 from pyprinter.controllers.text_controller import line_break
 from PIL import (
     Image,
@@ -11,6 +12,8 @@ from PIL import (
 
 
 class ImageController:
+
+    base_dir = get_project_root()
 
     def __init__(self):
         pass
@@ -57,7 +60,7 @@ class ImageController:
         x, y = 140, 10  # Margem
         font_normal = ImageFont.load_default(size=20)
         font_bold = ImageFont.truetype(
-            "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+            (self.base_dir / "pyprinter/resources/fonts/DejaVuSans-Bold.ttf").as_posix(),
             18
         )
 
@@ -99,7 +102,7 @@ class ImageController:
         draw = ImageDraw.Draw(info_image)
         # font = ImageFont.load_default(size=18)
         font_bold = ImageFont.truetype(
-            "/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf",
+            (self.base_dir / "pyprinter/resources/fonts/FreeMonoBold.ttf").as_posix(),
             20
         )
         draw.text(

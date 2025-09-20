@@ -162,29 +162,3 @@ class DanfcePrinter(object):
         except Exception as e:
             result = (False, f"Error: {e}")
         return result
-
-
-payload = {'header': {'logo': '/home/cleiton/PyJobs/MeusProjetos/PyPrinter/src/media/nf-e-nota-fiscal-eletronica.png',
-                      'issuer': 'CNPJ: 14.810.601/0001-74\nBOM DEMAIS-ALIMENTOS LTDA\nR CASSIMIRO DE ABREU, 28, 29118717\n'
-                                'INDUSTRIAL \nVILA VELHA - ES\nFone / Fax: 2730633939'},
-           'ambient': 'homologacao', 'emission_type': 'normal', 'products': [
-        ['010001', 'NOTA FISCAL EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL teste de informacao de produto-1',
-         '1 UN', '5.29', '5.29'],
-        ['010001', 'PAO QUEIJO BOM DEMAIS COQUETEL 400G teste de informacao de produto-2', '5 UN', '5.29', '26.45'],
-        ['010003', 'PAO QUEIJO BOM DEMAIS LANCHE 1KG teste de informacao de produto-3', '2 UN', '14.00', '28.00']],
-           'totais': '3 Itens                   Total Da Nota R$ 59.74',
-           'payments': [['PIX', '59.74'], ['Troco:', '0.00']], 'consumer': {},
-           'text_url_sefaz': 'Consulta pela chave de acesso em\nwww.sefaz.es.gov.br/nfce/consulta\n'
-                             '32240214810601000174650010000003211123000000\n',
-           'url_sefaz': 'www.sefaz.es.gov.br/nfce/consulta',
-           'qrcode': 'http://homologacao.sefaz.es.gov.br/ConsultaNFCe/qrcode.aspx?'
-                     'p=32240214810601000174650010000003211123000000|2|2|1|6b833c25046f31bd05867f4d222a1dc66861df5e',
-           'fiscal': 'NFC-e Serie 1\nN° 321\nProtocolo de autorizacao:\n332240000011205\nData da autorizacao\n'
-                     '09/02/2024 13:20:48 hs\nMeLinux 6.4',
-           'complements': 'Fonte: Impostos lbpt (fonte lbpt) Tributos Totais\n'
-                          ' (Lei Federal 12.741/2012) R$ 16.40\n',
-           'message': '# Operador Caixa: HELDER # OBRIGADO ! VOLTE SEMPRE #'}
-
-device = DanfcePrinter()
-device.initialize()
-device.print_document(payload)

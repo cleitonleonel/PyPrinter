@@ -1,4 +1,6 @@
+import os
 import io
+import signal
 from flask import (
     Blueprint,
     jsonify,
@@ -11,6 +13,13 @@ from pyprinter.controllers.conversor_controller import make_dict
 
 printer_app = Blueprint('printer_app', __name__)
 version = "0.0.1"
+
+
+def stop_server():
+    try:
+        os.kill(os.getpid(), signal.SIGINT)
+    except Exception as e:
+        print(f"Erro ao parar o servidor: {str(e)}")
 
 
 def validate_xml(xml_content):
@@ -47,12 +56,19 @@ def prepare_content():
     return data
 
 
-@printer_app.route("/", methods=['GET'])
+@printer_app.route("/api/v1/status", methods=['GET'])
 def index():
     return jsonify(message="ok", version=version)
 
+@printer_app.route('/stop', methods=['GET'])
+def stop():
+    stop_server()
+    return jsonify(
+        {'status': 'stopped'}
+    )
 
-@printer_app.route("/geradanfce", methods=['POST'])
+
+@printer_app.route("/api/v1/geradanfce", methods=['POST'])
 def danfce_generator():
     try:
         printer = DanfcePrinter()

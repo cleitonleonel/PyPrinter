@@ -1,7 +1,8 @@
-import os
 import xmltodict
+from pyprinter.config import get_project_root
 
-BASE_DIR = os.getcwd()
+BASE_DIR = get_project_root()
+LOGO_DEFAULT_PATH = (BASE_DIR / 'pyprinter/resources/media/nf-e-nota-fiscal-eletronica.png').as_posix()
 
 
 class DocumentController(object):
@@ -31,7 +32,7 @@ class DocumentController(object):
         else:
             self.data = xmltodict.parse(self.content)
 
-    def logo(self, logo_path=f'{BASE_DIR}/src/media/nf-e-nota-fiscal-eletronica.png'):
+    def logo(self, logo_path=LOGO_DEFAULT_PATH):
         self.logo_path = logo_path
         return self.logo_path
 

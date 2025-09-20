@@ -1,6 +1,6 @@
 #!/bin/bash
 
-url="http://localhost:8000/geradanfce"
+url="http://localhost:8000/api/v1/geradanfce"
 
 gera_danfce() {
     if [ -z "$1" ]; then
