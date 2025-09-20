@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyPrinter - Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 40px;
+            text-align: center;
+        }
+
+        main {
+            padding: 40px;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        a.button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 10px;
+            color: white;
+            background-color: #4CAF50;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        a.button:hover {
+            background-color: #45a049;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #f4f4f9;
+            color: #777;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>PyPrinter</h1>
+    <p>Servidor Flask para impressão de DANFCE</p>
+</header>
+
+<main>
+    <div class="card">
+        <h2>Bem-vindo!</h2>
+        <p>Este é o painel inicial do PyPrinter. Aqui você poderá enviar arquivos para impressão e gerenciar suas impressões.</p>
+        <a href="/api/v1/status" class="button">Status da API de Impressão</a>
+    </div>
+
+    <div class="card">
+        <h2>Status do Servidor</h2>
+        <p>O servidor está ativo e pronto para receber documentos.</p>
+    </div>
+</main>
+
+<footer>
+    &copy; 2025 PyPrinter - Desenvolvido por Cleiton Leonel Creton
+</footer>
+
+</body>
+</html>

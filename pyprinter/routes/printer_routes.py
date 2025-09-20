@@ -5,7 +5,8 @@ from flask import (
     Blueprint,
     jsonify,
     request,
-    send_file
+    send_file,
+    render_template
 )
 from xml.etree import ElementTree
 from pyprinter.controllers.coupon_controller import DanfcePrinter
@@ -56,8 +57,12 @@ def prepare_content():
     return data
 
 
+@printer_app.route("/", methods=['GET'])
+def home():
+    return render_template("home.html")
+
 @printer_app.route("/api/v1/status", methods=['GET'])
-def index():
+def status():
     return jsonify(message="ok", version=version)
 
 @printer_app.route('/stop', methods=['GET'])
